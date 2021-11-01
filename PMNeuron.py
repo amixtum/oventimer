@@ -5,6 +5,7 @@ from math import pi, sin, cos
 import simpleaudio as sa
 
 from Neuron import Neuron
+from RhythmHelper import RhythmHelper
 
 
 class PMNeuron(Neuron):
@@ -13,11 +14,13 @@ class PMNeuron(Neuron):
     duration = 44100
     queue = []
 
-    def __init__(self, cf, mf, mi, duration):
+    def __init__(self, cf, mf, mi, duration, bpm):
         self.setCarrierFrequency(cf)
         self.setModulationFrequency(mf)
         self.setModulationIndex(mi)
         self.duration = duration
+
+        self.rhythm = RhythmHelper(bpm, 44100)
 
     def setCarrierFrequency(self, cf):
         self.cf = cf
@@ -32,6 +35,15 @@ class PMNeuron(Neuron):
 
     def setDuration(self, duration):
         self.duration = duration
+
+    def setQuarter(self):
+        self.duration = self.rhythm.quarter()
+
+    def setEighth(self):
+        self.duration = self.rhythm.eighth()
+
+    def setSixteenth(self):
+        self.duration = self.rhythm.sixteenth()
 
     def next(self):
         s = 0.5 * sin(self.cPhase + (self.mi * cos(self.mPhase)))
@@ -53,9 +65,16 @@ class PMNeuron(Neuron):
     # t = time in samples
     def samples(self, t):
         return sa.WaveObject(array('i', [int(32767 * self.next()) for _ in range(int(t))]), 1, 2, 44100)
+    
+    # t = time in samples
+    def rest(self, t):
+        return sa.WaveObject(array('i', [0 for _ in range(int(t))]), 1, 2, 44100)
 
     def queueSamples(self):
         self.queue.append(self.samples(self.duration))
+    
+    def queueRest(self):
+        self.queue.append(self.rest(self.duration))
 
     def fire(self):
         if len(self.queue) > 0:
