@@ -20,7 +20,7 @@ def mix(pm1, pm2):
             idx11 += 1
             idx21 = 0
 
-        if idx22 >= len(pm1.queue[idx12]):
+        if idx22 >= len(pm2.queue[idx12]):
             idx12 += 1
             idx22 = 0
 
@@ -31,11 +31,11 @@ def mix(pm1, pm2):
             idx11 += 1
             idx21 = 0
 
-    while idx21 < len(pm2.queue):
-        out.append(int(pm2.queue[idx21][idx22]))
+    while idx12 < len(pm2.queue):
+        out.append(int(pm2.queue[idx12][idx22]))
         idx22 += 1
-        if idx22 >= len(pm2.queue[idx21]):
-            idx21 += 1
+        if idx22 >= len(pm2.queue[idx12]):
+            idx12 += 1
             idx22 = 0
 
     return array('i', out)
