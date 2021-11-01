@@ -11,27 +11,14 @@ from Mixer import *
 
 
 r = RhythmHelper(120, 44100)
-notes = NoteHelper(440)
+notes = NoteHelper(220)
 
-n1 = PMNeuron(notes.frequency, 40, 2.5, r.quarter(), r.bpm)
-n1.queueSamples()
+pms = [PMNeuron(notes.frequency, 20, 3, r.quarter(), 120), PMNeuron(notes.frequency, 20, 3, r.quarter(), 120), PMNeuron(notes.frequency, 20, 3, r.quarter(), 120)]
+for _ in range(10):
+    for pm in pms:
+        pm.fire()
 
-notes.transpose(4)
-
-n2 = PMNeuron(notes.frequency, 40, 2.5, r.quarter(), r.bpm)
-n2.queueSamples()
-
-notes.transpose(-2)
-
-n3 = PMNeuron(notes.frequency, 40, 2.5, r.quarter(), r.bpm)
-n3.queueSamples()
-
-
-out = mixN([n1, n2])
-
-print(len(n1.queue[0]))
-print(len(n2.queue[0]))
-print(len(out))
+out = mixN(pms)
 
 wave = sa.WaveObject(out, 1, 2, 44100)
 player = wave.play()
