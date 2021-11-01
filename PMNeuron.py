@@ -46,7 +46,7 @@ class PMNeuron(Neuron):
         self.duration = self.rhythm.sixteenth()
 
     def next(self):
-        s = 0.5 * sin(self.cPhase + (self.mi * cos(self.mPhase)))
+        s = 0.25 * sin(self.cPhase + (self.mi * cos(self.mPhase)))
         self.cPhase += self.cIncrement
         self.mPhase += self.mIncrement
 
@@ -64,11 +64,11 @@ class PMNeuron(Neuron):
 
     # t = time in samples
     def samples(self, t):
-        return sa.WaveObject(array('i', [int(32767 * self.next()) for _ in range(int(t))]), 1, 2, 44100)
+        return array('i', [int(32767 * self.next()) for _ in range(int(t))])
     
     # t = time in samples
     def rest(self, t):
-        return sa.WaveObject(array('i', [0 for _ in range(int(t))]), 1, 2, 44100)
+        return array('i', [0 for _ in range(int(t))])
 
     def queueSamples(self):
         self.queue.append(self.samples(self.duration))
@@ -77,5 +77,4 @@ class PMNeuron(Neuron):
         self.queue.append(self.rest(self.duration))
 
     def fire(self):
-        if len(self.queue) > 0:
-            return self.queue.pop(0).play()
+        pass
