@@ -1,4 +1,3 @@
-import simpleaudio as sa
 from array import array
 
 from PMNeuron import PMNeuron

@@ -9,16 +9,14 @@ from RhythmHelper import RhythmHelper
 
 
 class PMNeuron(Neuron):
-    cPhase = 0.0
-    mPhase = 0.0
-    duration = 44100
-    queue = []
-
     def __init__(self, cf, mf, mi, duration, bpm):
         self.setCarrierFrequency(cf)
         self.setModulationFrequency(mf)
         self.setModulationIndex(mi)
         self.duration = duration
+        self.queue = []
+        self.cPhase = 0.0
+        self.mPhase = 0.0
 
         self.rhythm = RhythmHelper(bpm, 44100)
 
