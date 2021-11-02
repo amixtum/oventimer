@@ -13,7 +13,8 @@ from ScaleHelper import ScaleHelper
 
 
 class PMNeuron(Neuron):
-    def __init__(self, cf, mf, mi, duration, bpm):
+    # transpose from major I
+    def __init__(self, cf, mf, mi, duration, bpm, xpose, scales=None):
         self.cf = cf
         self.mf = mf
         self.mi = mi
@@ -27,7 +28,12 @@ class PMNeuron(Neuron):
         self.mPhase = 0.0
 
         self.rhythm = RhythmHelper(bpm, 44100)
-        self.scales = ScaleHelper(6, 220)
+
+        if scales is None:
+            self.scales = ScaleHelper(xpose, self.cf)
+        else:
+            self.scales = scales
+        self.setCarrierFrequency(self.scales.frequency())
 
     def setCarrierFrequency(self, cf):
         self.cf = cf
@@ -51,6 +57,18 @@ class PMNeuron(Neuron):
 
     def setSixteenth(self):
         self.duration = self.rhythm.sixteenth()
+
+    def transpose(self, n):
+        self.scales.transpose(n)
+        self.setCarrierFrequency(self.scales.frequency())
+
+    def transposeFromCenter(self, n):
+        self.scales.reset()
+        self.scales.transpose(n)
+        self.setCarrierFrequency(self.scales.frequency())
+    
+    def interval(self):
+        return self.scales.fromStart
 
     def next(self):
         s = 0.3 * sin(self.cPhase + (self.mi * cos(self.mPhase)))
@@ -77,30 +95,30 @@ class PMNeuron(Neuron):
     def rest(self, t):
         return array('i', [0 for _ in range(int(t))])
 
-    def queueSamples(self):
-        self.queue.append(self.samples(self.duration))
+    def queueSamples(self, duration=None):
+        if duration is None:
+            self.queue.append(self.samples(self.duration))
+        else:
+            self.queue.append(self.samples(duration))
+        
+    def queueRest(self, duration=None):
+        if duration is None:
+            self.queue.append(self.rest(self.duration))
+        else:
+            self.queue.append(self.rest(duration))
+
+    # does not copy its queue over (?)
+    def copy(self):
+        c = PMNeuron(self.cf, self.mf, self.mi, self.duration, self.bpm, self.interval(), self.scales.copy())
+        return c
     
-    def queueRest(self):
-        self.queue.append(self.rest(self.duration))
+    # returns a copy with a queue filled with silence as long as this queue is filled with sound
+    def copyWithSilence(self):
+        c = self.copy()
+        restLength = sum([len(self.queue[i]) for i in range(len(self.queue))])
+        c.queueRest(restLength)
+        return c
+
 
     def fire(self):
-        durationFn = choice([self.setQuarter, self.setEighth, self.setSixteenth])
-        durationFn()
-
-        if random() > 0.5:
-            interval = choice([-7, -5, -3, -1, 1, 3, 5, 7])
-            self.scales.transpose(interval)
-            if abs(self.scales.fromStart) > 7:
-                self.scales.reset()
-            self.setCarrierFrequency(self.scales.frequency())
-
-            modScale = choice([2.5, 5, 7.5])
-            self.setModulationIndex(modScale)
-
-            modFrequencyScale = choice([0.5, 1.5, 0.25, 2])
-            self.setModulationFrequency(self.mf * modFrequencyScale)
-            if abs(self.mf) > 120:
-                self.setModulationFrequency(20)
-            self.queueSamples()
-        else:
-            self.queueRest()
+        pass

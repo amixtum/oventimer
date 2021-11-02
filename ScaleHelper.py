@@ -2,6 +2,7 @@ from NoteHelper import NoteHelper
 
 class ScaleHelper(object):
     def __init__(self, start=0, frequency=220):
+        self.initialFrequency = frequency
         self.start = start
         self.fromStart = 0
         self.notes = NoteHelper(self.frequency)
@@ -39,3 +40,8 @@ class ScaleHelper(object):
 
     def reset(self):
         self.transpose(-self.fromStart)
+
+    def copy(self):
+        c = ScaleHelper(self.start, self.initialFrequency)
+        c.transpose(self.fromStart)
+        return c

@@ -10,16 +10,8 @@ class NoteHelper(object):
         self.frequency = center
 
     def transpose(self, semitones):
-        if semitones < 0:
-            s = int(abs(semitones))
-            self.frequency /= (s * pow(2, 1 / 12))
-        else:
-            self.frequency *= (semitones * pow(2, 1 / 12))
+        self.frequency *= pow(2, semitones / 12)
         return self.frequency
 
     def transposeFromCenter(self, semitones):
-        if semitones < 0:
-            s = int(abs(semitones))
-            return self.center / (s * pow(2, 1 / 12))
-        else:
-            return self.center * (semitones * pow(2, 1 / 12))
+            return self.center * pow(2, semitones / 12)
