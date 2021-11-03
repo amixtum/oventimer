@@ -1,11 +1,9 @@
 from array import array
 
-from math import modf, pi, sin, cos
+from math import pi, sin, cos
 
 from random import choice
 from random import random
-
-import simpleaudio as sa
 
 from Neuron import Neuron
 from RhythmHelper import RhythmHelper
@@ -68,6 +66,9 @@ class PMNeuron(Neuron):
         self.setCarrierFrequency(self.scales.frequency())
     
     def interval(self):
+        self.scales.fromStart % 8
+
+    def intervalFull(self):
         return self.scales.fromStart
 
     def next(self):
