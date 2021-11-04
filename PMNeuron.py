@@ -123,6 +123,8 @@ class PMNeuron(Neuron):
         c.queueRest(restLength)
         return c
 
+    def resetQueue(self):
+        self.queue = []
 
     def fire(self):
         pass
