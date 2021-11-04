@@ -2,7 +2,6 @@ import simpleaudio as sa
 
 
 from SleepNeuron import SleepNeuron
-from BeepNeuron import BeepNeuron
 from PMNeuron import PMNeuron
 
 from RhythmHelper import RhythmHelper

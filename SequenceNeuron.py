@@ -23,6 +23,9 @@ class SequenceNeuron(Neuron):
         self.sequence = sequence
         self.sidx = 0
     
+    def interval(self):
+        return self.pm.interval()
+    
     """
         queue the next note or rest, according to RhythmGen
     """
