@@ -41,3 +41,5 @@ def makeChord(pm1, pm2, pmResult):
         pmResult.transpose(findTransposeFull(pm2, pmResult, 5))
     elif i == 6: # seventh
         pmResult.transpose(findTransposeFull(pm2, pmResult, 3))
+    else:
+        pmResult.transpose(findTransposeFull(pm2, pmResult), 5)
