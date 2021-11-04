@@ -10,7 +10,7 @@ from NoteHelper import NoteHelper
 from Mixer import *
 
 
-r = RhythmHelper(170, 44100)
+r = RhythmHelper(120, 44100)
 notes = NoteHelper(440)
 
 pms = [PMNeuron(notes.frequency, 0, 3, r.quarter(), r.bpm), PMNeuron(notes.frequency, 20, 3, r.quarter(), r.bpm)]

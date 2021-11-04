@@ -65,8 +65,11 @@ class PMNeuron(Neuron):
         self.scales.transpose(n)
         self.setCarrierFrequency(self.scales.frequency())
     
+    def resetTranspose(self):
+        self.transposeFromCenter(0)
+    
     def interval(self):
-        self.scales.fromStart % 8
+        self.scales.fromStart % 7
 
     def intervalFull(self):
         return self.scales.fromStart

@@ -27,6 +27,7 @@ class RhythmGen(object):
             if self.evenNext:
                 self.sinceOdd += 1
                 if self.sinceOdd >= self.nEven:
+                    self.sinceOdd = 0
                     self.evenNext = False
                 return True
             return False 
@@ -35,5 +36,6 @@ class RhythmGen(object):
                 return False
             self.sinceEven += 1
             if self.sinceEven >= self.nOdd:
+                self.sinceEven = 0
                 self.evenNext = True 
             return True
