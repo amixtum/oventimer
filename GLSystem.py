@@ -27,7 +27,7 @@ class GLSystem(object):
         result = []
         for e in self.now:
             for v in self.expandRules[e]:
-                self.result.append(v)
+                result.append(v)
         self.now = result 
 
     def trim(self):

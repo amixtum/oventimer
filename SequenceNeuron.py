@@ -1,5 +1,4 @@
 from random import choice
-from math import abs
 
 from Neuron import Neuron
 from PMNeuron import PMNeuron

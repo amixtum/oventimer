@@ -26,6 +26,7 @@ class PMNeuron(Neuron):
         self.mPhase = 0.0
 
         self.rhythm = RhythmHelper(bpm, 44100)
+        self.bpm = bpm
 
         if scales is None:
             self.scales = ScaleHelper(xpose, self.cf)
@@ -69,7 +70,7 @@ class PMNeuron(Neuron):
         self.transposeFromCenter(0)
     
     def interval(self):
-        self.scales.fromStart % 7
+        return self.scales.fromStart % 7
 
     def intervalFull(self):
         return self.scales.fromStart

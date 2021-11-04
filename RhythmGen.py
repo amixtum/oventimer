@@ -1,3 +1,5 @@
+from random import random
+
 from RhythmHelper import RhythmHelper
 
 class RhythmGen(object):
@@ -23,7 +25,8 @@ class RhythmGen(object):
         return (self.__computeNote(), self.rhythm.quarter())
 
     def __computeNote(self):
-        if (self.metronome % 2) == 0:
+        return random() >= 0.2
+"""         if (self.metronome % 2) == 0:
             if self.evenNext:
                 self.sinceOdd += 1
                 if self.sinceOdd >= self.nEven:
@@ -38,4 +41,4 @@ class RhythmGen(object):
             if self.sinceEven >= self.nOdd:
                 self.sinceEven = 0
                 self.evenNext = True 
-            return True
+            return True """

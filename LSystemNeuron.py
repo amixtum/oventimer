@@ -24,19 +24,14 @@ class LSystemNeuron(Neuron):
         self.lsystem.expand()
         self.lsystem.trim()
 
-        nowIdx = 0
-        while nowIdx < len(self.lsystem.now):
-            rFn = choice([self.rhythm.tickQuarter, self.rhythm.tickEighth, self.rhythm.tickSixteenth])
-            r = rFn()
-            self.pm.setDuration(r[1])
-            if r[0]:
-                self.pm.transpose(self.lsystem.now[nowIdx])
-                nowIdx += 1
-                self.pm.queueSamples()
-            else:
-                self.pm.queueRest()
-
     def fire(self):
         i = self.idx
-        self.idx = (self.idx + 1) % len(self.lsystem.now)
-        return self.lsystem.now[i]
+        rFn = choice([self.rhythm.tickQuarter, self.rhythm.tickEighth, self.rhythm.tickSixteenth])
+        r = rFn()
+        self.pm.setDuration(r[1])
+        if r[0]:
+            self.pm.transposeFromCenter(self.lsystem.now[i])
+            self.pm.queueSamples()
+            self.idx = (self.idx + 1) % len(self.lsystem.now)
+        else:
+            self.pm.queueRest()

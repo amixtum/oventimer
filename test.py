@@ -1,23 +1,27 @@
 import simpleaudio as sa
 
-
-from SleepNeuron import SleepNeuron
-from PMNeuron import PMNeuron
-
-from RhythmHelper import RhythmHelper
-from NoteHelper import NoteHelper
-from Mixer import *
+from SequenceNeuron import SequenceNeuron
+from LSystemNeuron import LSystemNeuron
+from HarmonyNeuron import HarmonyNeuron
 
 
-r = RhythmHelper(120, 44100)
-notes = NoteHelper(440)
+sNeuron = SequenceNeuron(440, 120, 0, (3, -4, 5, -4), 2, 1)
+lNeuron = LSystemNeuron(sNeuron.pm, \
+                        (3, -4, 5, -4), \
+                        {-6: [-3, 1], -5: [4, -1], -4: [5, -3], -3: [3], -2: [2], -1: [2], 0: [0], \
+                          1: [5, 1], 2: [-1], 3: [-3], 4: [-5, 3], 5: [-4, 1], 6: [3, -1]}, \
+                        [[[1, 1], 1], [[2, 2], 2], [[3, 3], 3], [[4, 4], 4], [[5, 5], 5], [[6, 6], 6], \
+                        [[-1, -1], -1], [[-2, -2], -2], [[-3, -3], -3], [[-4, -4], -4], [[-5, -5], -5], [[-6, -6], -6]], \
+                        120, 2, 1)
 
-pms = [PMNeuron(notes.frequency, 0, 3, r.quarter(), r.bpm), PMNeuron(notes.frequency, 20, 3, r.quarter(), r.bpm)]
+hNeuron = HarmonyNeuron(sNeuron, lNeuron, 2, 2, 1)
 
-pms[0].fire()
-pms[1].fire()
+print(lNeuron.lsystem.now)
 
-out = mixN(pms)
+for _ in range(32):
+    hNeuron.fire()
+
+out = hNeuron.getMix()
 
 wave = sa.WaveObject(out, 1, 2, 44100)
 player = wave.play()
