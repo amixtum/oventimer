@@ -1,5 +1,6 @@
 from random import choice
 
+from Neuron import Neuron
 from SequenceNeuron import SequenceNeuron
 from LSystemNeuron import LSystemNeuron
 from RhythmGen import RhythmGen
